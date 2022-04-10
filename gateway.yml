@@ -9,6 +9,7 @@ spec:
   servers:
     - hosts:
         - kube.wfgmb.com
+        - toremove.wfgmb.com
         - devops.wfgmb.com
         - nafdac-dev-ng.wfgmb.com
         - nafdac-qa-ng.wfgmb.com
