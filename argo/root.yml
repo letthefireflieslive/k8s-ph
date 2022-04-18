@@ -8,7 +8,7 @@ spec:
     namespace: argocd
   project: default
   source:
-    repoURL: https://github.com/letthefireflieslive/k8s-ph.git
+    repoURL: https://github.com/letthefireflieslive/k8s-ph
     path: ./argo/apps
     targetRevision: HEAD
   syncPolicy:
