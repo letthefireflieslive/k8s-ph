@@ -9,7 +9,7 @@ spec:
   project: default
 
   source:
-    chart: istio/base
+    chart: base
     repoURL: https://istio-release.storage.googleapis.com
     targetRevision: 1.13.2
 
