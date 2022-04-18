@@ -24,7 +24,7 @@ the user name is `admin`
 `argocd login localhost:8081` or via `http://localhost:8081`
 
 # Create all VCS resources
-`argocd app create root -f argo/root.yml`
+`argocd app create cluster-root -f argo/root.yml`
 
 # Maintenance
 
