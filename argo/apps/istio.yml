@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: istio
+  name: istio-base
   namespace: argocd
   finalizers:
     - resources-finalizer.argocd.argoproj.io
@@ -9,12 +9,13 @@ spec:
   project: default
 
   source:
-    repoURL: https://github.com/letthefireflieslive/k8s-ph.git
-    targetRevision: HEAD
-    path: ./manifest/istio
+    chart: base
+    repoURL: https://istio-release.storage.googleapis.com
+    targetRevision: 1.13.2
 
   destination:
     server: https://kubernetes.default.svc
+    destination: istio-system
 
   syncPolicy:
     syncOptions:
