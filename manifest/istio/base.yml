@@ -10,11 +10,12 @@ spec:
 
   source:
     chart: istio/base
-    repoURL: https://istio-release.storage.googleapis.com/charts
+    repoURL: https://istio-release.storage.googleapis.com
     targetRevision: 1.13.2
 
   destination:
     server: https://kubernetes.default.svc
+    destination: istio-system
 
   syncPolicy:
     syncOptions:
