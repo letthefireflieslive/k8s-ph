@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-root
+spec:
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: argocd
+  project: default
+  source:
+    repoURL: git@github.com:letthefireflieslive/k8s-ph.git
+    path: ./argo/apps
+    targetRevision: HEAD
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+    automated:
+      prune: true
+      selfHeal: true
+
