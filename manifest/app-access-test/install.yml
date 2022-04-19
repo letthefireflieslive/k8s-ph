@@ -21,14 +21,13 @@ kind: Service
 metadata:
   name: istio-ingressgateway
   namespace: istio-system
-  annotations:
-    labels:
-      app: istio-ingressgateway
-      istio: ingressgateway
-      release: istio
-      istio.io/rev: default
-      install.operator.istio.io/owning-resource: unknown
-      operator.istio.io/component: "IngressGateways"
+  labels:
+    app: istio-ingressgateway
+    istio: ingressgateway
+    release: istio
+    istio.io/rev: default
+    install.operator.istio.io/owning-resource: unknown
+    operator.istio.io/component: "IngressGateways"
 spec:
   externalIPs:
     - 192.53.175.125
