@@ -4,10 +4,9 @@ kind: Role
 metadata:
   name: argo-workflow-admin
 rules:
-  - apiGroups:
-      - workflows.argoproj.io
+  - apiGroups: [""]
     resources:
-      - *
+      - workflows.argoproj.io
     verbs:
       - create
       - get
