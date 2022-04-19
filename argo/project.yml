@@ -12,3 +12,20 @@ spec:
   destinations:
   - server: https://kubernetes.default.svc
     namespace: argocd
+  - server: https://kubernetes.default.svc
+    namespace: kube-system
+  - server: https://kubernetes.default.svc
+    namespace: istio-system
+  - server: https://kubernetes.default.svc
+    namespace: argoworkflow
+  - server: https://kubernetes.default.svc
+    namespace: argoevents
+  - server: https://kubernetes.default.svc
+    namespace: smoke
+  - server: https://kubernetes.default.svc
+    namespace: smoke
+  - server: https://kubernetes.default.svc
+    namespace: nfs
+  - server: https://kubernetes.default.svc
+    namespace: permission-manager
+
