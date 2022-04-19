@@ -9,3 +9,5 @@ spec:
   description: Cluster Tools Project
   sourceRepos:
     - '*'
+  destinations:
+    - argocd
