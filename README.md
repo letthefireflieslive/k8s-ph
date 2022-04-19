@@ -41,6 +41,8 @@ echo $ARGO_TOKEN`
 `kubectl -n argoworkflow port-forward deployment/argo-server 8082:2746`
 `https://localhost:8082`
 
+# Expose Argo Webhook Event
+`kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook -o name) 12000:12000 &`
 
 # Maintenance
 
@@ -51,8 +53,13 @@ Add the entry at `./argo/apps`
 Git commit and push it, ArgoCD will pick it up.
 You can also manually hit the "sync" button in argo app
 
-## Test
+# Test
+
+## Test App access
 `http://$IP/smoke`
+
+## Test argo event webhook
+`curl -d '{"message":"this is my first webhook"}' -H "Content-Type: application/json" -X POST http://localhost:12000/example`
 
 This should return the default nginx landing page
 
