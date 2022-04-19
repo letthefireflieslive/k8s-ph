@@ -6,8 +6,7 @@ metadata:
   namespace: argoworkflow
 rules:
   - apiGroups: ["*"]
-    resources:
-      - workflows.argoproj.io
+    resources: ["*"]
     verbs: ["*"]
 
 ---
