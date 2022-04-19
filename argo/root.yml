@@ -6,7 +6,7 @@ spec:
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: argocd
-  project: default
+  project: cluster-tools
   source:
     repoURL: https://github.com/letthefireflieslive/k8s-ph.git
     path: ./argo/apps
