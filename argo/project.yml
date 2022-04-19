@@ -23,9 +23,6 @@ spec:
   - server: https://kubernetes.default.svc
     namespace: smoke
   - server: https://kubernetes.default.svc
-    namespace: smoke
-  - server: https://kubernetes.default.svc
     namespace: nfs
   - server: https://kubernetes.default.svc
     namespace: permission-manager
-
