@@ -1,0 +1,35 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: argo-workflow-admin
+rules:
+  - apiGroups:
+      - *
+    resources:
+      - workflows.argoproj.io
+    verbs:
+      - create
+      - get
+      - list
+      - update
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argo-workflow-admin
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: argo-workflow-admin
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: argo-workflow-admin
+subjects:
+  - kind: ServiceAccount
+    name: argo-workflow-admin
+    namespace: argoworkflow
