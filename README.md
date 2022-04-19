@@ -31,7 +31,7 @@ _Ideally, you should use a hostname_.
 
 # Create all VCS resources
 ```
-argocd proj create cluster-tools -f argo/project.yml```
+argocd proj create cluster-tools -f argo/project.yml
 argocd app create cluster-root -f argo/root.yml
 ```
 
