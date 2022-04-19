@@ -1,0 +1,110 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: ingress-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - 192.53.175.125
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: istio-ingressgateway
+  namespace: istio-system
+spec:
+  externalIPs:
+    - 192.53.175.125
+  ports:
+    - name: http2
+      nodePort: 30080
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+    - name: https
+      nodePort: 30443
+      port: 443
+      protocol: TCP
+      targetPort: 8443
+  selector:
+    app: istio-ingressgateway
+    istio: ingressgateway
+  sessionAffinity: None
+  type: LoadBalancer
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: smoke
+  labels:
+    istio-injection: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smoke
+  namespace: smoke
+spec:
+  selector:
+    matchLabels:
+      run: smoke
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        run: smoke
+    spec:
+      containers:
+        - name: smoke
+          image: nginx
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: smoke
+  namespace: smoke
+  labels:
+    run: smoke
+spec:
+  ports:
+    - port: 80
+      protocol: TCP
+  selector:
+    run: smoke
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: smoke
+  namespace: smoke
+spec:
+  gateways:
+    - istio-system/ingress-gateway
+  hosts:
+    - 192.53.175.125
+  http:
+    - match:
+        - uri:
+            prefix: /smoke
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: smoke
+            port:
+              number: 80
+
+
