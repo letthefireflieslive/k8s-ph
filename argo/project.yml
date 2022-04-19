@@ -26,3 +26,6 @@ spec:
     namespace: nfs
   - server: https://kubernetes.default.svc
     namespace: permission-manager
+  clusterResourceWhitelist:
+    - group: '*'
+      kind: '*'
