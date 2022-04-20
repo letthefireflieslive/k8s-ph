@@ -39,6 +39,7 @@ _Ideally, you should use a hostname_.
 ## Create sealed secrets
 ```
 kubectl -n argoevents create secret docker-registry container-reg-creds --docker-username=[USERNAME] --docker-password=[PASSWORD] --docker-email=[EMAIL] --docker-server="https://index.docker.io/v1/" --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/container-registry-creds.yml
+kubectl -n argoevents create secret generic github-access --from-literal=token=[GITHUB-PERSONAL-ACCESS-TOKEN] --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/github-pat.yml
 git add . 
 git commit -m "Add container registry creds"
 git push
