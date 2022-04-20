@@ -4,11 +4,23 @@ kind: EventSource
 metadata:
   name: github-sb1-code-change
 spec:
-  webhook:
-    example:
-      port: "12000"
-      endpoint: /sb1
-      method: POST
+  github:
+    argo-combined-app:
+      owner: letthefireflieslive
+      repository: test-app-sb1
+      webhook:
+        endpoint: /argoevent
+        port: "12001"
+        method: POST
+        url: http://45.118.132.73
+      events:
+        - "*"
+      apiToken:
+        name: github-access
+        key: token
+      insecure: true
+      active: true
+      contentType: json
 ---
 apiVersion: v1
 kind: Service
@@ -28,43 +40,167 @@ spec:
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
-  name: github-sb1-code-change
+  name: github-webhook
 spec:
   template:
-    serviceAccountName: operate-workflow-sa
+    serviceAccountName: argo-events-sa
   dependencies:
-    - name: test-dep
+    - name: github
       eventSourceName: github-sb1-code-change
       eventName: github-sb1-code-change
   triggers:
     - template:
-        name: webhook-workflow-trigger
-        k8s:
-          operation: create
+        name: trigger
+        argoWorkflow:
+          group: argoproj.io
+          version: v1alpha1
+          resource: workflows
+          operation: submit
           source:
             resource:
               apiVersion: argoproj.io/v1alpha1
               kind: Workflow
               metadata:
-                generateName: webhook-
+                generateName: sb1-pipeline-
+                namespace: workflows
               spec:
-                entrypoint: whalesay
-                arguments:
-                  parameters:
-                    - name: message
-                      # the value will get overridden by event payload from test-dep
-                      value: hello world
+                entrypoint: build
+                serviceAccountName: workflow
+                volumes:
+                  - name: regcred
+                    secret:
+                      secretName: container-reg-creds
+                      items:
+                        - key: .dockerconfigjson
+                          path: config.json
+                  - name: github-access
+                    secret:
+                      secretName: github-access
+                      items:
+                        - key: token
+                          path: token
+                        - key: user
+                          path: user
+                        - key: email
+                          path: email
                 templates:
-                  - name: whalesay
-                    inputs:
-                      parameters:
-                        - name: message
-                    container:
-                      image: docker/whalesay:latest
-                      command: [cowsay]
-                      args: ["{{inputs.parameters.message}}"]
+                  - name: build
+                    dag:
+                      tasks:
+                        - name: build
+                          templateRef:
+                            name: container-image
+                            template: build-kaniko-git
+                            clusterScope: true
+                          arguments:
+                            parameters:
+                              - name: repo_url
+                                value: ""
+                              - name: repo_ref
+                                value: ""
+                              - name: repo_commit_id
+                                value: ""
+                              - name: container_image
+                                value: letthefireflieslive/
+                              - name: container_tag
+                                value: ""
+                        - name: promote-staging
+                          templateRef:
+                            name: promote
+                            template: promote
+                            clusterScope: true
+                          arguments:
+                            parameters:
+                              - name: environment
+                                value: staging
+                              - name: repo_owner
+                                value: letthefireflieslive
+                              - name: repo_name
+                                value: argo-combined-demo
+                              - name: image_owner
+                                value: letthefireflieslive
+                              - name: image_name
+                                value: ""
+                              - name: tag
+                                value: ""
+                          dependencies:
+                            - build
+                        - name: promote-production
+                          templateRef:
+                            name: promote
+                            template: promote
+                            clusterScope: true
+                          arguments:
+                            parameters:
+                              - name: environment
+                                value: production
+                              - name: repo_owner
+                                value: letthefireflieslive
+                              - name: repo_name
+                                value: argo-combined-demo
+                              - name: image_owner
+                                value: letthefireflieslive
+                              - name: image_name
+                                value: ""
+                              - name: tag
+                                value: ""
+                          dependencies:
+                            - test-functional
+                            - test-integration
+                        - name: test-functional
+                          template: test
+                          dependencies:
+                            - promote-staging
+                        - name: test-integration
+                          template: test
+                          dependencies:
+                            - promote-staging
+                  - name: test
+                    script:
+                      image: alpine
+                      command: [sh]
+                      source: |
+                        echo This is a testing simulation...
+                        sleep 5
+                      volumeMounts:
+                        - name: github-access
+                          mountPath: /.github/
           parameters:
             - src:
-                dependencyName: test-dep
-                dataKey: body
-              dest: spec.arguments.parameters.0.value
+                dependencyName: github
+                dataKey: body.repository.git_url
+              dest: spec.templates.0.dag.tasks.0.arguments.parameters.0.value
+            - src:
+                dependencyName: github
+                dataKey: body.ref
+              dest: spec.templates.0.dag.tasks.0.arguments.parameters.1.value
+            - src:
+                dependencyName: github
+                dataKey: body.after
+              dest: spec.templates.0.dag.tasks.0.arguments.parameters.2.value
+            - src:
+                dependencyName: github
+                dataKey: body.repository.name
+              dest: spec.templates.0.dag.tasks.0.arguments.parameters.3.value
+              operation: append
+            - src:
+                dependencyName: github
+                dataKey: body.after
+              dest: spec.templates.0.dag.tasks.0.arguments.parameters.4.value
+            - src:
+                dependencyName: github
+                dataKey: body.repository.name
+              dest: spec.templates.0.dag.tasks.1.arguments.parameters.4.value
+            - src:
+                dependencyName: github
+                dataKey: body.after
+              dest: spec.templates.0.dag.tasks.1.arguments.parameters.5.value
+            - src:
+                dependencyName: github
+                dataKey: body.repository.name
+              dest: spec.templates.0.dag.tasks.2.arguments.parameters.4.value
+            - src:
+                dependencyName: github
+                dataKey: body.after
+              dest: spec.templates.0.dag.tasks.2.arguments.parameters.5.value
+

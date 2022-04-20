@@ -36,6 +36,14 @@ Change the IP addresses in `./manifest/app-access-test` and `manifest/argo-event
 _This is tested in single kubernetes node in linode_
 _Ideally, you should use a hostname_. 
 
+## Create sealed secrets
+```
+kubectl -n argoevents create secret docker-registry container-reg-creds --docker-username=[USERNAME] --docker-password=[PASSWORD] --docker-email=[EMAIL] --docker-server="https://index.docker.io/v1/" --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/container-registry-creds.yml
+git add . 
+git commit -m "Add container registry creds"
+git push
+```
+
 # Create all VCS resources
 ```
 argocd proj create cluster-tools -f argo/project.yml
