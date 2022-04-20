@@ -2,7 +2,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
-  name: github-sb1
+  name: webhook-sample
 spec:
   webhook:
     example:
@@ -31,13 +31,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: webhook
+  name: webhook-sample
 spec:
   ports:
     - port: 12000
       protocol: TCP
   selector:
-    eventsource-name: github-sb1-code-change
+    eventsource-name: webhook-sample
   type: NodePort
   externalIPs:
     - 45.118.132.73
