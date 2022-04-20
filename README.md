@@ -29,7 +29,9 @@ the user name is `admin`
 `argocd login localhost:8081`
 
 # Change app-access-test IP address
-Change the IP addresses in `./manifest/app-access-test` to what you are using.
+`export IP=[YOURIP]`
+
+Change the IP addresses in `./manifest/app-access-test` and `manifest/argo-events/example.yml` to what you are using.
 
 _This is tested in single kubernetes node in linode_
 _Ideally, you should use a hostname_. 
@@ -65,11 +67,13 @@ You can also manually hit the "referesh"/"sync" button in argo app
 
 ## Test App access
 `http://$IP/smoke`
+This should return the default nginx landing page
 
 ## Test argo event webhook
-`curl -d '{"message":"this is my first webhook"}' -H "Content-Type: application/json" -X POST http://localhost:12000/example`
+`curl -d '{"message":"this is my first webhook"}' -H "Content-Type: application/json" -X POST http:///$IP:12000/example`
+This should return the message success
 
-This should return the default nginx landing page
+You can also check `kubectl -n argoevents get workflows | grep "webhook"`
 
 ## Note
 `istio-ingressgateway` service is moved to app-access-test.. i think argocd shines with kustomize
