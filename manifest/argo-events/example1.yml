@@ -34,9 +34,8 @@ metadata:
   name: webhook
 spec:
   ports:
-    - port: 12001
+    - port: 12000
       protocol: TCP
-      targetPort: 12000
   selector:
     eventsource-name: github-sb1-code-change
   type: NodePort
