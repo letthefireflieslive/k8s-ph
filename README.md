@@ -14,9 +14,10 @@ kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.3.3/manifests/install.yaml
 ```
 
-# Access ArgoCD
+# Expose & Access ArgoCD
 `kubectl -n argocd port-forward svc/argocd-server 8081:80`
 
+Access
 `localhost:8081` at the browser
 
 # Get argo admin password
@@ -44,7 +45,7 @@ argocd app create cluster-root -f argo/root.yml
 ARGO_TOKEN="Bearer $(kubectl get secret $SECRET -o=jsonpath='{.data.token}' | base64 --decode)"
 echo $ARGO_TOKEN`
 
-# Access Argo Workflow
+# Expose and Access Argo Workflow
 `kubectl -n argoworkflow port-forward deployment/argo-server 8082:2746`
 `https://localhost:8082`
 
@@ -58,7 +59,7 @@ Add the entry at `./argo/apps`
 
 ## K8s Configuration Update?
 Git commit and push it, ArgoCD will pick it up.
-You can also manually hit the "sync" button in argo app
+You can also manually hit the "referesh"/"sync" button in argo app
 
 # Test
 
