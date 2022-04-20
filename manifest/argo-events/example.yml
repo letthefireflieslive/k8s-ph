@@ -9,7 +9,6 @@ spec:
       port: "12000"
       endpoint: /example
       method: POST
-
 #    example-foo:
 #      port: "12000"
 #      endpoint: /example2
@@ -28,6 +27,21 @@ spec:
 #      serverKeySecret:
 #        name: my-secret
 #        key: pk-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: github-sb1-code-change
+spec:
+  ports:
+    - port: 12001
+      protocol: TCP
+      targetPort: 12000
+  selector:
+    eventsource-name: github-sb1-code-change
+  type: NodePort
+  externalIPs:
+    - 45.118.132.73
 
 ---
 apiVersion: rbac.authorization.k8s.io/v1
