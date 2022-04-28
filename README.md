@@ -21,25 +21,28 @@ Access
 `localhost:8081` at the browser
 
 # Get argo admin password
-`kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo`
-
-the user name is `admin`
+`export ARGOCDPW=$(kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo)`
 
 # Login to Argo
-`argocd login localhost:8081`
+`argocd login --insecure --username admin --password $ARGOCDPW localhost:8081`
 
-# Change app-access-test IP address
+# Update IP address
 `export IP=[YOURIP]`
-
-Change the IP addresses in `./manifest/app-access-test` and `manifest/argo-events/example.yml` to what you are using.
-
-_This is tested in single kubernetes node in linode_
-_Ideally, you should use a hostname_. 
+```
+sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/app-access-test/install.yml
+sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/argo-events/example1.yml
+sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/argo-events/example2.yml
+```
 
 ## Create sealed secrets
 ```
-kubectl -n argoevents create secret docker-registry container-reg-creds --docker-username=[USERNAME] --docker-password=[PASSWORD] --docker-email=[EMAIL] --docker-server="https://index.docker.io/v1/" --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/container-registry-creds.yml
-kubectl -n argoevents create secret generic github-access --from-literal=token=[GITHUB-PERSONAL-ACCESS-TOKEN] --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/github-pat.yml
+export DOCKER_USERNAME=[CHANGEME]
+export DOCKER_PASSWORD=[CHANGEME]
+export GITHUB_PERSONAL_ACCESS_TOKEN=[CHANGEME]
+```
+````
+kubectl -n argoevents create secret docker-registry container-reg-creds --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-server="https://index.docker.io/v1/" --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/container-registry-creds.yml
+kubectl -n argoevents create secret generic github-access --from-literal=token=$GITHUB_PERSONAL_ACCESS_TOKEN --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/github-pat.yml
 git add . 
 git commit -m "Add container registry creds"
 git push

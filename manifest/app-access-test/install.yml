@@ -8,7 +8,7 @@ spec:
     istio: ingressgateway
   servers:
     - hosts:
-        - 45.118.132.73
+        - 192.53.173.203
       port:
         name: http
         number: 80
@@ -30,7 +30,7 @@ metadata:
     operator.istio.io/component: "IngressGateways"
 spec:
   externalIPs:
-    - 45.118.132.73
+    - 192.53.173.203
   ports:
     - name: status-port
       port: 15021
@@ -103,7 +103,7 @@ spec:
   gateways:
     - istio-system/ingress-gateway
   hosts:
-    - 45.118.132.73
+    - 192.53.173.203
   http:
     - match:
         - uri:
