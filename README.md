@@ -34,6 +34,12 @@ sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manif
 sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/argo-events/example2.yml
 ```
 
+# Create all VCS resources
+```
+argocd proj create cluster-tools -f argo/project.yml
+argocd app create cluster-root -f argo/root.yml
+```
+
 ## Create sealed secrets
 ```
 export DOCKER_USERNAME=[CHANGEME]
@@ -46,12 +52,6 @@ kubectl -n argoevents create secret generic github-access --from-literal=token=$
 git add . 
 git commit -m "Add container registry and github PAT creds"
 git push
-```
-
-# Create all VCS resources
-```
-argocd proj create cluster-tools -f argo/project.yml
-argocd app create cluster-root -f argo/root.yml
 ```
 
 # Get Argo Workflow Token
