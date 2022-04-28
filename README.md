@@ -40,7 +40,7 @@ export DOCKER_USERNAME=[CHANGEME]
 export DOCKER_PASSWORD=[CHANGEME]
 export GITHUB_PERSONAL_ACCESS_TOKEN=[CHANGEME]
 ```
-````
+```
 kubectl -n argoevents create secret docker-registry container-reg-creds --docker-username=$DOCKER_USERNAME --docker-password=$DOCKER_PASSWORD --docker-server="https://index.docker.io/v1/" --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/container-registry-creds.yml
 kubectl -n argoevents create secret generic github-access --from-literal=token=$GITHUB_PERSONAL_ACCESS_TOKEN --dry-run=client -o yaml | kubeseal -o yaml > manifest/argo-events/github-pat.yml
 git add . 
