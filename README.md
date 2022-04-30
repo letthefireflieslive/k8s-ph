@@ -57,17 +57,14 @@ argocd proj create cluster-tools -f argo/project.yml
 argocd app create cluster-root -f argo/root.yml
 ```
 
-# Get Argo Workflow Token
-`SECRET=$(kubectl get sa argo-workflow-admin -o=jsonpath='{.secrets[0].name}')
-ARGO_TOKEN="Bearer $(kubectl get secret $SECRET -o=jsonpath='{.data.token}' | base64 --decode)"
-echo $ARGO_TOKEN`
-
 # Expose and Access Argo Workflow
 `kubectl -n argoworkflow port-forward deployment/argo-server 8082:2746`
+
+Access at
 `https://localhost:8082`
 
 # Expose Argo Webhook Event
-`kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook -o name) 12000:12000 &`
+`kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook-sample -o name) 12000:12000 &`
 
 # Maintenance
 
