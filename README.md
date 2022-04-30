@@ -15,7 +15,7 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2
 ```
 
 # Expose & Access ArgoCD
-`kubectl -n argocd port-forward svc/argocd-server 8081:80`
+`while true; do kubectl -n argocd port-forward svc/argocd-server 8081:80; done`
 
 Access
 `localhost:8081` at the browser
@@ -58,13 +58,13 @@ argocd app create cluster-root -f argo/root.yml
 ```
 
 # Expose and Access Argo Workflow
-`kubectl -n argoworkflow port-forward deployment/argo-server 8082:2746`
+`while true; do kubectl -n argoworkflow port-forward deployment/argo-server 8082:2746; done`
 
 Access at
 `https://localhost:8082`
 
 # Expose Argo Webhook Event
-`kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook-sample -o name) 12000:12000 &`
+`while true; do kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook-sample -o name) 12000:12000; done`
 
 # Maintenance
 
