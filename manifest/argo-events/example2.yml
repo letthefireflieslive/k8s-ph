@@ -2,10 +2,10 @@
 apiVersion: argoproj.io/v1alpha1
 kind: EventSource
 metadata:
-  name: github-sb1-code-change
+  name: github-sb1
 spec:
   github:
-    argo-combined-app:
+    source-code-change:
       owner: letthefireflieslive
       repository: test-app-sb1
       webhook:
@@ -25,14 +25,14 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: github-sb1-code-change
+  name: github-sb1
 spec:
   ports:
     - port: 12001
       protocol: TCP
       targetPort: 12000
   selector:
-    eventsource-name: github-sb1-code-change
+    eventsource-name: github-sb1
   type: NodePort
   externalIPs:
     - 172.104.184.43
@@ -46,8 +46,8 @@ spec:
     serviceAccountName: operate-workflow-sa
   dependencies:
     - name: github
-      eventSourceName: github-sb1-code-change
-      eventName: github-sb1-code-change
+      eventSourceName: github-sb1
+      eventName: source-code-change
   triggers:
     - template:
         name: trigger
