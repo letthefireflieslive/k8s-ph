@@ -43,19 +43,6 @@ spec:
     - 172.104.184.43
 
 ---
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: workflow-role-binding
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: workflow-role
-subjects:
-  - kind: ServiceAccount
-    name: default
-
----
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
 metadata:
@@ -65,7 +52,7 @@ spec:
     serviceAccountName: operate-workflow-sa
   dependencies:
     - name: test-dep
-      eventSourceName: github-sb1
+      eventSourceName: webhook-sample
       eventName: example
   triggers:
     - template:
