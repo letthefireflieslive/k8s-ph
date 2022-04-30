@@ -43,7 +43,7 @@ metadata:
   name: github-webhook
 spec:
   template:
-    serviceAccountName: argo-events-sa
+    serviceAccountName: operate-workflow-sa
   dependencies:
     - name: github
       eventSourceName: github-sb1-code-change
