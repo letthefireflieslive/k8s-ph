@@ -30,7 +30,6 @@ spec:
   ports:
     - port: 12001
       protocol: TCP
-      targetPort: 12000
   selector:
     eventsource-name: github-sb1
   type: NodePort
