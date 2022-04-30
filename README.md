@@ -32,6 +32,9 @@ Access
 sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/app-access-test/install.yml
 sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/argo-events/example1.yml
 sed -i -e "s/[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}\.[0-9]\{1,3\}/$IP/g" manifest/argo-events/example2.yml
+git add .
+git commit -m "Update IPs"
+git push
 ```
 
 # Create all VCS resources
