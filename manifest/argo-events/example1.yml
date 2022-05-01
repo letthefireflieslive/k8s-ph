@@ -40,7 +40,7 @@ spec:
     eventsource-name: webhook-sample
   type: NodePort
   externalIPs:
-    - 172.104.184.43
+    - 139.162.5.232
 
 ---
 apiVersion: argoproj.io/v1alpha1

@@ -13,6 +13,7 @@ This is meant to be managed by DevOps team.
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.3.3/manifests/install.yaml
 kubectl apply -f https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.17.5/controller.yaml
+kubectl wait pods --for=condition=Ready --all-namespaces --all
 ```
 
 # Expose & Access ArgoCD

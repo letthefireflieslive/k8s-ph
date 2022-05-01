@@ -12,7 +12,7 @@ spec:
         endpoint: /argoevent
         port: "12001"
         method: POST
-        url: http://172.104.184.43
+        url: http://139.162.5.232
       events:
         - "*"
       apiToken:
@@ -34,7 +34,7 @@ spec:
     eventsource-name: github-sb1
   type: NodePort
   externalIPs:
-    - 172.104.184.43
+    - 139.162.5.232
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Sensor
