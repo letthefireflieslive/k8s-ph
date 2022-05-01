@@ -698,7 +698,7 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: argo
+  name: argoworkflow
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -1068,7 +1068,7 @@ roleRef:
   name: argo-role
 subjects:
   - kind: ServiceAccount
-    name: argo
+    name: argoworkflow
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -1141,7 +1141,7 @@ roleRef:
   name: argo-clusterworkflowtemplate-role
 subjects:
   - kind: ServiceAccount
-    name: argo
+    name: argoworkflow
     namespace: argoworkflow
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -1574,4 +1574,4 @@ spec:
       priorityClassName: workflow-controller
       securityContext:
         runAsNonRoot: true
-      serviceAccountName: argo
+      serviceAccountName: argoworkflow
