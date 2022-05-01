@@ -84,7 +84,7 @@ You can also manually hit the "referesh"/"sync" button in argo app
 This should return the default nginx landing page
 
 ## Test argo event webhook
-`curl -d '{"message":"this is my first webhook"}' -H "Content-Type: application/json" -X POST http:///$IP:12000/example`
+`curl -d '{"message":"this is my first webhook"}' -H "Content-Type: application/json" -X POST http:///$IP:12001/argoevent`
 This should return the message success
 
 You can also check `kubectl -n argoevents get workflows | grep "webhook"`
