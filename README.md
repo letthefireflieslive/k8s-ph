@@ -66,7 +66,7 @@ Access at
 `https://localhost:8082`
 
 # Expose Argo Webhook Event
-`while true; do kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=webhook-sample -o name) 12000:12000; done`
+`while true; do kubectl -n argoevents port-forward $(kubectl -n argoevents get pod -l eventsource-name=github-sb1 -o name) 12001:12001; done`
 
 # Maintenance
 
