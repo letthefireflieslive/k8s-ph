@@ -8,10 +8,11 @@ This is meant to be managed by DevOps team.
 - (optional) argocd CLI
 - (optional) argo (workflow) CLI
 
-# Install ArgoCD
+# Install ArgoCD & Sealed Secret
 ```
 kubectl create namespace argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/v2.3.3/manifests/install.yaml
+kubectl apply -f manifest/sealed-secret/install.yml
 ```
 
 # Expose & Access ArgoCD
