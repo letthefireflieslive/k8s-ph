@@ -213,16 +213,6 @@ metadata:
 rules:
   - apiGroups:
       - argoproj.io
-    resources:
-      - sensors
-      - sensors/finalizers
-      - sensors/status
-      - eventsources
-      - eventsources/finalizers
-      - eventsources/status
-      - eventbus
-      - eventbus/finalizers
-      - eventbus/status
     verbs:
       - create
       - delete
@@ -232,6 +222,24 @@ rules:
       - patch
       - update
       - watch
+    resources:
+      - workflows
+      - workflows/finalizers
+      - workflowtemplates
+      - workflowtemplates/finalizers
+      - cronworkflows
+      - cronworkflows/finalizers
+      - clusterworkflowtemplates
+      - clusterworkflowtemplates/finalizers
+      - sensors
+      - sensors/finalizers
+      - sensors/status
+      - eventsources
+      - eventsources/finalizers
+      - eventsources/status
+      - eventbus
+      - eventbus/finalizers
+      - eventbus/status
   - apiGroups:
       - ""
     resources:
@@ -262,6 +270,7 @@ rules:
       - update
       - patch
       - delete
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
