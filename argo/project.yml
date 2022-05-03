@@ -19,6 +19,8 @@ spec:
   - server: https://kubernetes.default.svc
     namespace: argoworkflow
   - server: https://kubernetes.default.svc
+    namespace: argo
+  - server: https://kubernetes.default.svc
     namespace: argoevents
   - server: https://kubernetes.default.svc
     namespace: smoke
