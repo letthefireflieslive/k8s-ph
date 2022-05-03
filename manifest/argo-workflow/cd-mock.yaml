@@ -26,9 +26,9 @@ spec:
         arguments:
           parameters:
           - name: repo_url
-            value: git://github.com/letthefireflieslive/test-app-sb1
+            value: git://github.com/vfarcic/argo-workflows-demo
           - name: container_image
-            value: legnoban/test-app-sb1
+            value: vfarcic/devops-toolkit
           - name: container_tag
             value: "1.0.0"
       - name: deploy-staging
