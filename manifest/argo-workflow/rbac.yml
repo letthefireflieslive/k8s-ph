@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: argowf-sa
+  namespace: argo
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: argowf-role
+rules:
+  - apiGroups:
+      - argoproj.io
+    verbs:
+      - create
+      - delete
+      - deletecollection
+      - get
+      - list
+      - patch
+      - update
+      - watch
+    resources:
+      - workflows
+      - workflows/finalizers
+      - workflowtemplates
+      - workflowtemplates/finalizers
+      - cronworkflows
+      - cronworkflows/finalizers
+      - clusterworkflowtemplates
+      - clusterworkflowtemplates/finalizers
+      - sensors
+      - sensors/finalizers
+      - sensors/status
+      - eventsources
+      - eventsources/finalizers
+      - eventsources/status
+      - eventbus
+      - eventbus/finalizers
+      - eventbus/status
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - pods/exec
+      - configmaps
+      - secrets
+      - services
+      - persistentvolumeclaims
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - update
+      - patch
+      - delete
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+      - statefulsets
+    verbs:
+      - create
+      - get
+      - list
+      - watch
+      - update
+      - patch
+      - delete
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: argowf-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: argowf-role
+subjects:
+  - kind: ServiceAccount
+    name: argowf-sa
+    namespace: argo
