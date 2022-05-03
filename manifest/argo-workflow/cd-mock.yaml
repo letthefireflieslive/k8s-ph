@@ -28,7 +28,7 @@ spec:
           - name: repo_url
             value: git://github.com/vfarcic/argo-workflows-demo
           - name: container_image
-            value: vfarcic/devops-toolkit
+            value: legnoban/test-app-sb1
           - name: container_tag
             value: "1.0.0"
       - name: deploy-staging
