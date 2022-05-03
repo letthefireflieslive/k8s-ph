@@ -5,7 +5,7 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: container-image
 spec:
-  serviceAccountName: workflow
+  serviceAccountName: argo
   templates:
   - name: build-kaniko-git
     inputs:
@@ -34,7 +34,7 @@ kind: ClusterWorkflowTemplate
 metadata:
   name: promote
 spec:
-  serviceAccountName: workflow
+  serviceAccountName: argo
   templates:
   - name: promote
     inputs:
