@@ -25,7 +25,7 @@ spec:
           clusterScope: true
         arguments:
           parameters:
-          - name: app_repo
+          - name: repo_url
             value: git://github.com/letthefireflieslive/test-app-sb1
           - name: container_image
             value: legnoban/test-app-sb1
