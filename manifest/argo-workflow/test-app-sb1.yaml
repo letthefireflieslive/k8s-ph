@@ -1,0 +1,87 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Workflow
+metadata:
+  generateName: sb1-
+  labels:
+    workflows.argoproj.io/archive-strategy: "false"
+spec:
+  entrypoint: full
+  serviceAccountName: argo
+  volumes:
+  - name: kaniko-secret
+    secret:
+      secretName: regcred
+      items:
+        - key: .dockerconfigjson
+          path: config.json
+  templates:
+  - name: full
+    dag:
+      tasks:
+      - name: build-container-image
+        templateRef:
+          name: container-image
+          template: build-kaniko-git
+          clusterScope: true
+        arguments:
+          parameters:
+          - name: repo_url
+            value: git://github.com/letthefireflieslive/test-app-sb1
+          - name: repo_ref
+            value: refs/heads/main
+          - name: container_image
+            value: legnoban/test-app-sb1a
+          - name: container_tag
+            value: "1.0.0"
+      - name: promote-staging
+        templateRef:
+          name: promote
+          template: promote
+          clusterScope: true
+        arguments:
+          parameters:
+            - name: environment
+              value: staging
+            - name: repo_owner
+              value: vfarcic
+            - name: repo_name
+              value: argo-combined-demo
+            - name: image_owner
+              value: vfarcic
+            - name: image_name
+              value: ""
+            - name: tag
+              value: ""
+#      - name: deploy-staging
+#        template: echo
+#        arguments:
+#          parameters:
+#          - name: message
+#            value: Deploying to the staging cluster...
+#        dependencies:
+#        - build-container-image
+#      - name: tests
+#        template: echo
+#        arguments:
+#          parameters:
+#          - name: message
+#            value: Running integration tests (before, during, and after the deployment is finished)...
+#        dependencies:
+#        - build-container-image
+#      - name: deploy-production
+#        template: echo
+#        arguments:
+#          parameters:
+#          - name: message
+#            value: Deploying to the production cluster...
+#        dependencies:
+#        - tests
+#  - name: echo
+#    inputs:
+#      parameters:
+#      - name: message
+#    container:
+#      image: alpine
+#      command: [echo]
+#      args:
+#      - "{{inputs.parameters.message}}"

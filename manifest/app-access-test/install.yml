@@ -8,7 +8,7 @@ spec:
     istio: ingressgateway
   servers:
     - hosts:
-        - 139.162.5.232
+        - 10.218.8.146
       port:
         name: http
         number: 80
@@ -30,7 +30,7 @@ metadata:
     operator.istio.io/component: "IngressGateways"
 spec:
   externalIPs:
-    - 139.162.5.232
+    - 10.218.8.146
   ports:
     - name: status-port
       port: 15021
@@ -68,7 +68,7 @@ spec:
   selector:
     matchLabels:
       run: smoke
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -103,7 +103,7 @@ spec:
   gateways:
     - istio-system/ingress-gateway
   hosts:
-    - 139.162.5.232
+    - 10.218.8.146
   http:
     - match:
         - uri:
