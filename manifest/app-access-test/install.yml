@@ -101,9 +101,9 @@ metadata:
   namespace: smoke
 spec:
   gateways:
-    - istio-system/ingress-gateway
+    - istio-system/cluster-ingressgateway
   hosts:
-    - 10.218.8.146
+    - devops.wfgmb.com
   http:
     - match:
         - uri:
